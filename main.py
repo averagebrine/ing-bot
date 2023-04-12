@@ -6,15 +6,15 @@ load_dotenv()
 bot = discord.Bot()
 token = os.getenv("TOKEN")
 
-print("Connecting...")
+print("Ing-Bot is starting...")
 
 @bot.event
 async def on_ready():
-    print(f"Bot logged in as {bot.user}!")
+    print(f"Ing-Bot is logged in and online!")
 
 # import cogs
-cogs = ["fun"]
+cogs = ["meta", "fun"]
 for cog in cogs:
-    bot.load_extension(f'cogs.{cog}')
+    bot.load_extension(f"cogs.{cog}")
 
 bot.run(token)
