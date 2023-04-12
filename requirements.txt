@@ -1,3 +1,7 @@
 python3
 py-cord
 python-dotenv
+requests
+random
+urllib
+PIL

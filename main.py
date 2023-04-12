@@ -1,5 +1,4 @@
-import os
-import discord
+import os, discord
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -13,7 +12,7 @@ async def on_ready():
     print(f"Ing-Bot is logged in and online!")
 
 # import cogs
-cogs = ["meta", "fun"]
+cogs = ["meta", "ingot_pack", "fun"]
 for cog in cogs:
     bot.load_extension(f"cogs.{cog}")
 

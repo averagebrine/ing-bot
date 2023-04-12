@@ -5,7 +5,7 @@ class TemplateCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @discord.slash_command(name = "test", description = "Template command")
+    @discord.slash_command(description="Template command")
     async def test(self, ctx):
         await ctx.respond("Hello world!")
 

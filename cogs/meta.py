@@ -5,17 +5,17 @@ class MetaCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @discord.slash_command(description = "Display Ing-Bot's latency")
+    @discord.slash_command(description="Display Ing-Bot's latency")
     async def ping(self, ctx):
         latency = round(self.bot.latency * 1000)
         await ctx.respond(f"{latency}ms")
 
-    @discord.slash_command(description = "Display helpful information about Ing-Bot's commands")
+    @discord.slash_command(description="Display helpful information about Ing-Bot's commands")
     async def help(self, ctx):
         embed = discord.Embed(
-            title = "Ing-Bot Commands",
-            description = "Information on all of Ing-Bot's commands",
-            color = discord.Colour.blurple()
+            title="Ing-Bot Commands",
+            description="Information on all of Ing-Bot's commands",
+            color=discord.Colour.blurple()
         )
 
         embed.set_author(name="Ingot Cultists United™️", icon_url="https://github.com/WaspVentMan/Ingot-Pack/blob/main/assets/ingot_cult/alt_logo_scaled.png?raw=true")
@@ -26,6 +26,9 @@ class MetaCommands(commands.Cog):
         embed.add_field(name="Meta Commands", value="", inline=False)
         embed.add_field(name="/help", value="Displays this help embed")
         embed.add_field(name="/ping", value="Measures and displays Ing-Bot's latency")
+
+        embed.add_field(name="Ingot Pack Commands", value="", inline=False)
+        embed.add_field(name="/search", value="Look for an item in the Ingot Pack, then display it")
 
         embed.add_field(name="Fun Commands", value="", inline=False)
         embed.add_field(name="/hello", value="Says hello to Ing-Bot")
