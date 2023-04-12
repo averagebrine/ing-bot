@@ -22,11 +22,11 @@ class IngotPackCommands(commands.Cog):
         ingot_name = str(query).lower().replace(" ", "_")
 
         if ingot_name == "turtle" or ingot_name == "vedal" or ingot_name == "hello":
-            embed = discord.Embed(title=ingot_name.title(), color=discord.Colour.green())
+            embed = discord.Embed(title=ingot_name.title().replace("_", " "), color=discord.Colour.green())
             embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/1093280397162455101.gif?quality=lossless")
             final_image = discord.File("assets/display/vedal.gif")
             embed.set_image(url="attachment://vedal.gif")
-            embed.set_footer(text=ingot_name.title(), icon_url="https://cdn.discordapp.com/emojis/1093280397162455101.gif?quality=lossless")
+            embed.set_footer(text=ingot_name.title().replace("_", " "), icon_url="https://cdn.discordapp.com/emojis/1093280397162455101.gif?quality=lossless")
 
             await ctx.respond(embed=embed, file=final_image)
             return
@@ -38,7 +38,7 @@ class IngotPackCommands(commands.Cog):
 
         urllib.request.urlretrieve(ingot_texture_path, temp_image_path)
 
-        embed = discord.Embed(title=ingot_name.title(), color=discord.Colour.blurple(), url=ingot_texture_path)
+        embed = discord.Embed(title=ingot_name.title().replace("_", " "), color=discord.Colour.blurple(), url=ingot_texture_path)
 
         # ingo descripto
         ingot_description = requests.get('https://raw.githubusercontent.com/WaspVentMan/Ingot-Pack/main/assets/ingot_cult/ing-bot/descriptions/' + ingot_name + '.txt').content.decode('utf-8')
