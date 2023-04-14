@@ -2,9 +2,10 @@ import os, discord, requests, random, urllib.request
 from discord.ext import commands
 from PIL import Image
 
-backing_image_path = "assets/display/backing.png"
+search_aliases_path = "assets/aliases.txt"
 temporary_image_path = "assets/temporary/temporary.png"
 random_ingots_path = "assets/display/random_ingots/"
+backing_image_path = "assets/display/backing.png"
 
 class IngotPackCommands(commands.Cog):
     def __init__(self, bot):
@@ -22,12 +23,6 @@ class IngotPackCommands(commands.Cog):
         ingot_name = str(name).lower().replace("_", " ")
         ingot_file_name = str(name).lower().replace(" ", "_")
 
-        if ingot_name == "hello" or ingot_name == "turtle" or ingot_name == "vedal":
-            embed = discord.Embed(color=discord.Colour.green())
-            embed_file = discord.File("assets/display/vedal.gif")
-            embed.set_image(url="attachment://vedal.gif")
-            await ctx.respond(embed=embed, file=embed_file)
-            return
 
         if mode == "item":
             ingot_url = "https://raw.githubusercontent.com/WaspVentMan/Ingot-Pack/main/assets/minecraft/textures/item/" + ingot_file_name + ".png"
@@ -38,10 +33,46 @@ class IngotPackCommands(commands.Cog):
             urllib.request.urlretrieve(ingot_url, temporary_image_path)
         except Exception as error:
             if "404" in str(error):
-                await ctx.respond("Sorry, that ingot doesn't seem to exist. Are you sure you spelled it correctly?", ephemeral=True)
+                # search aliases before erroring
+                with open(search_aliases_path, "r") as text:
+                    lines = text.readlines()
+                    keys = {}
+                    for line in lines:
+                        key, value = line.strip().split("=")
+                        keys[key] = value
+
+                    if ingot_file_name in keys:
+                        if "@emoji" in keys.get(ingot_file_name):
+                            mode = "emoji"
+                        ingot_file_name = keys.get(ingot_file_name).replace("@emoji", "")
+                        ingot_name = ingot_file_name.replace("_", " ")
+
+                        if mode == "item":
+                            ingot_url = "https://raw.githubusercontent.com/WaspVentMan/Ingot-Pack/main/assets/minecraft/textures/item/" + ingot_file_name + ".png"
+                        else:
+                            ingot_url = "https://raw.githubusercontent.com/WaspVentMan/Ingot-Pack/main/assets/ingot_cult/emoji/" + ingot_file_name + ".png"
+
+                        if ingot_name == "vedal":
+                            embed = discord.Embed(color=discord.Colour.green())
+                            embed_file = discord.File("assets/display/vedal.gif")
+                            embed.set_image(url="attachment://vedal.gif")
+                            await ctx.respond(embed=embed, file=embed_file)
+                            return
+
+                        urllib.request.urlretrieve(ingot_url, temporary_image_path)
+                    else:
+                        await ctx.respond("Sorry, that ingot doesn't seem to exist. Are you sure you spelled it correctly?", ephemeral=True)
+                        return
             else:
                 await ctx.respond("Uh oh, there's been some kind of error. Please try again.", ephemeral=True)
                 print(error)
+                return
+
+        if ingot_name == "vedal":
+            embed = discord.Embed(color=discord.Colour.green())
+            embed_file = discord.File("assets/display/vedal.gif")
+            embed.set_image(url="attachment://vedal.gif")
+            await ctx.respond(embed=embed, file=embed_file)
             return
 
         # ingo descripto
@@ -63,7 +94,7 @@ class IngotPackCommands(commands.Cog):
                 random_ingots.append(Image.open(random_ingot_path).convert("RGBA"))
 
             base_image.paste(ingot_image, (6, 6), ingot_image)
-    
+
             random_ingot_positions = [(-12, -12), (6, -12), (24, -12), (-12, 6), (24, 6), (-12, 24), (6, 24), (24, 24)]
             for i in range(8):
                 base_image.paste(random_ingots[i], random_ingot_positions[i], random_ingots[i])
